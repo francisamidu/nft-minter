@@ -15,7 +15,7 @@ import {
 } from "../config";
 import { useAssets } from ".";
 import { toast } from "react-toastify";
-import { getProvider } from "../helpers";
+import { getProvider,getEnvVariable } from "../helpers";
 import { Provider } from "@ethersproject/providers";
 
 const ContractContext = createContext(null);
@@ -76,16 +76,20 @@ export const ContractProvider = ({
   useEffect(() => {
     //Blockchain config
     const provider = getProvider();
+    const wallet = ethers.Wallet.fromMnemonic(
+      getEnvVariable("NEXT_PUBLIC_MNEMONIC", "")
+    );
+    const signer = wallet.connect(provider);
     setProvider(provider);
     const ERC1155Contract = new ethers.Contract(
       ERC1155NFTAddress,
       ERC1155Abi,
-      provider
+      signer
     );
     const ERC721Contract = new ethers.Contract(
       ERC721NFTAddress,
       ERC721Abi,
-      provider
+      signer
     );
     setERC1155Contract(ERC1155Contract);
     setERC721Contract(ERC721Contract);
