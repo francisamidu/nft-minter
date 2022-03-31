@@ -5,5 +5,5 @@ import client from "./ipfs";
 import AccountHelper from "./accountHelper";
 export { client as ipfs, millify, uid };
 
-export const { getEnvVariable, getProvider, getAccount } = AccountHelper;
+export const { getProvider, getAccount } = AccountHelper;
 export const { formatDate, formatNote } = Formatter;

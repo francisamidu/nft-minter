@@ -1,18 +1,7 @@
 import { ethers } from "ethers";
 
 class AccountHelper {
-  // Helper method for fetching environment variables from .env
-  static getEnvVariable(key, defaultValue) {
-    if (process.env[key]) {
-      return process.env[key];
-    }
-    if (!defaultValue) {
-      throw `${key} is not defined and no default value was provided`;
-    }
-    return defaultValue;
-  }
-
-  // Helper method for fetching a connection provider to the Ethereum network
+    // Helper method for fetching a connection provider to the Ethereum network
   static getProvider() {
     const provider = new ethers.providers.InfuraProvider(
       "ropsten",
