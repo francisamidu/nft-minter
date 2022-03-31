@@ -15,7 +15,7 @@ import {
 } from "../config";
 import { useAssets } from ".";
 import { toast } from "react-toastify";
-import { getProvider,getEnvVariable } from "../helpers";
+import { getProvider } from "../helpers";
 import { Provider } from "@ethersproject/providers";
 
 const ContractContext = createContext(null);
