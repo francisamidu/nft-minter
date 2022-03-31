@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #1b2041;
+  --color-primary-secondary: #4a58b4;
+  --color-primary-dark: #090b16;
+}
+
+.color-primary {
+  color: var(--color-primary);
+}
+.bg-primary {
+  color: var(--color-primary);
+}
+
+.color-dark-primary {
+  color: var(--color-dark-primary);
+}
+
+.color-primary-secondary {
+  color: var(--color-primary-secondary);
+}
+* {
+  font-family: "Inter";
+}
+
+a {
+  outline: none !important;
+}
+.link-active {
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    z-index: 20;
+    background-color: var(--color-primary);
+    transition: background-color 0.75s linear;
+  }
+}
+.mint-nft-layout {
+  grid-template-columns: 500px minmax(0, 2.5fr);
+}
+
+.switch {
+  position: relative;
+  width: 200px;
+  height: 40px;
+  border-radius: 10px;
+}
+.switch input {
+  appearance: none;
+  width: 200px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #ccc;
+  outline: none;
+  transition: 0.25s;
+  &::before,
+  &::after {
+    position: absolute;
+    z-index: 3;
+    bottom: -50%;
+    transform: translateY(50%);
+    font-weight: bolder;
+  }
+  &::before {
+    content: "ERC1155";
+    left: 20px;
+  }
+
+  &::after {
+    content: "ERC721";
+    right: 20px;
+  }
+  &:checked {
+    background-color: #ccc;
+  }
+}
+.switch label {
+  z-index: 1;
+  height: 35px;
+  position: absolute;
+  bottom: -50%;
+  transform: translateY(50%);
+  border-radius: 10px;
+}
+
+.switch input:checked::before {
+  color: #111;
+  transition: color 0.5s 0.2s;
+}
+
+.switch input:checked::after {
+  color: #555;
+  transition: color 0.5s;
+}
+.switch input:checked + label {
+  left: 2.5px;
+  right: 100px;
+  background: #fff;
+  transition: left 0.5s, right 0.5s;
+}
+.switch input:not(:checked) {
+  background: #ccc;
+  transition: background-color 0.4s;
+}
+
+.switch input:not(:checked)::before {
+  color: #555;
+  transition: color 0.5s 0.2s;
+}
+
+.switch input:not(:checked)::after {
+  color: #111;
+  transition: color 0.5s 0.2s;
+}
+.switch input:not(:checked) + label {
+  left: 100px;
+  right: 2.5px;
+  background-color: #fff;
+  transition: left 0.4s 0.2s, right 0.5s, background-color 0.35s;
+}
