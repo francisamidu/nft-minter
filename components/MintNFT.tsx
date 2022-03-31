@@ -95,7 +95,7 @@ const MintNFT = () => {
     }
 
     if (!account) {
-      connectWallet();
+      toast.error("Please connect to your wallet first")
     } else {
       completeNftCreation();
     }
