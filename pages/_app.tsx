@@ -5,6 +5,9 @@ import "../node_modules/tailwindcss/tailwind.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
+import { Web3ReactProvider } from "@web3-react/core";
+import { ExternalProvider, Web3Provider } from "@ethersproject/providers";
+
 import {
   AppContextProvider,
   AssetsContextProvider,
@@ -21,19 +24,23 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
+const getLibrary = (provider: ExternalProvider) => new Web3Provider(provider);
+
 const App = ({ Component, pageProps }: AppPropsWithLayout): unknown => {
   const getLayout = Component.getLayout ?? ((page) => page);
   return (
-    <AppContextProvider>
-      <AssetsContextProvider>
-        <ToastContainer />
-        <TabContextProvider>
-          <ContractProvider>
-            {getLayout(<Component {...pageProps} />)}
-          </ContractProvider>
-        </TabContextProvider>
-      </AssetsContextProvider>
-    </AppContextProvider>
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <AppContextProvider>
+        <ContractProvider>
+          <AssetsContextProvider>
+            <ToastContainer />
+            <TabContextProvider>
+              {getLayout(<Component {...pageProps} />)}
+            </TabContextProvider>
+          </AssetsContextProvider>
+        </ContractProvider>
+      </AppContextProvider>
+    </Web3ReactProvider>
   );
 };
 

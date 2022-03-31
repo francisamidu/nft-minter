@@ -3,7 +3,8 @@ import { uid } from "../helpers";
 import { useApp } from "../contexts";
 import Link from "next/link";
 import millify from "millify";
-import Button from "./Button";
+import { Button } from ".";
+import { FaChevronDown as IChev } from "react-icons/fa";
 
 const Nav = () => {
   const [links, setLinks] = useState([
@@ -23,10 +24,18 @@ const Nav = () => {
       active: false,
       id: uid(),
       path: "/dashboard?tab=assets",
-      text: "My Assets",
+      text: "Assets",
     },
   ]);
-  const { account, balance: accountBalance, connectWallet, name } = useApp();
+  const [connectionOptions, setConnectionOptions] = useState(false);
+  const {
+    account,
+    active,
+    balance: accountBalance,
+    connectWallet,
+    name,
+    disconnectWallet,
+  } = useApp();
   const balance = Number(
     Number(accountBalance) > 10000 ? accountBalance.slice(0, 4) : accountBalance
   );
@@ -47,6 +56,9 @@ const Nav = () => {
     account.length
   )}`;
   const [showMenu, setShowMenu] = useState(false);
+  const toggleConnectionOptions = () => {
+    setConnectionOptions(!connectionOptions);
+  };
   return (
     <section className="bg-white fixed top-0 left-0 w-full z-10 py-0">
       <div className="md:max-w-screen-xl md:mx-auto relative">
@@ -66,7 +78,7 @@ const Nav = () => {
               </Link>
             ))}
           </div>
-          <div className="sm:flex flex-row items-center">
+          <div className="sm:flex flex-row items-center relative">
             <span className="hidden sm:block font-bold mr-6 text-white">
               {millify(balance)} ETH
             </span>
@@ -76,8 +88,51 @@ const Nav = () => {
             <Button
               text="Connect"
               className="bg-[#2133a715] text-[#2133a7] hover:text-white mt-0 ml-2 text-sm font-bold"
-              onClick={connectWallet}
+              onClick={toggleConnectionOptions}
+              icon={<IChev className="ml-2 text-[#2133a7] hover:text-white" />}
             />
+            {connectionOptions && active ? (
+              <div className="flex flex-col w-full absolute top-14 -right-2 z-10 bg-white rounded-md shadow max-w-fit transition-all duration-200">
+                <span
+                  className="cursor-pointer hover:bg-[#2133a715] transition-colors duration-300 p-2 hover:text-[#2133a7] rounded-t-md"
+                  onClick={() => {
+                    connectWallet("coinbase");
+                    toggleConnectionOptions();
+                  }}
+                >
+                  Coinbase Wallet
+                </span>
+                <span
+                  className="cursor-pointer hover:bg-[#2133a715] transition-colors duration-300 p-2 hover:text-[#2133a7]"
+                  onClick={() => {
+                    connectWallet("walletconnect");
+                    toggleConnectionOptions();
+                  }}
+                >
+                  WalletConnect
+                </span>
+                <span
+                  className="cursor-pointer hover:bg-[#2133a715] transition-colors duration-300 p-2 hover:text-[#2133a7] rounded-b-md"
+                  onClick={() => {
+                    connectWallet("metamask");
+                    toggleConnectionOptions();
+                  }}
+                >
+                  Metamask
+                </span>
+              </div>
+            ) : connectionOptions && !active ? (
+              <div className="flex flex-col w-full absolute top-14 -right-2 z-10 bg-white rounded-md shadow max-w-fit transition-all duration-200">
+                <span
+                  className="cursor-pointer hover:bg-[#2133a715] transition-colors duration-300 p-2 hover:text-[#2133a7] rounded-t-md"
+                  onClick={() => {
+                    disconnectWallet();
+                  }}
+                >
+                  Disconnect Wallet
+                </span>
+              </div>
+            ) : null}
           </div>
         </nav>
       </div>

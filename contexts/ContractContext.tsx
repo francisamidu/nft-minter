@@ -16,15 +16,17 @@ import {
 import { useAssets } from ".";
 import { toast } from "react-toastify";
 import { getProvider } from "../helpers";
+import { Provider } from "@ethersproject/providers";
 
 const ContractContext = createContext(null);
-const ContractProvider = ({
+export const ContractProvider = ({
   children,
 }: PropsWithChildren<Partial<ReactNode>>) => {
   const { nfts, setNfts } = useAssets();
 
   const [ERC1155Contract, setERC1155Contract] = useState<Contract>(null);
   const [ERC721Contract, setERC721Contract] = useState<Contract>(null);
+  const [provider, setProvider] = useState<Provider>(null);
   const loadUserNFTs = async (contract: Contract) => {
     try {
       const isERC1155 = contract.address === ERC1155NFTAddress;
@@ -46,7 +48,6 @@ const ContractProvider = ({
           }
         }
         setNfts([...nfts, ...items]);
-        console.log(nfts);
       } else {
         let tokenIds = await contract._tokenIds();
         tokenIds = tokenIds.toNumber();
@@ -63,7 +64,6 @@ const ContractProvider = ({
               tokenUri,
             };
             setNfts([...nfts, ...items]);
-            console.log(nfts);
           }
         }
       }
@@ -76,6 +76,7 @@ const ContractProvider = ({
   useEffect(() => {
     //Blockchain config
     const provider = getProvider();
+    setProvider(provider);
     const ERC1155Contract = new ethers.Contract(
       ERC1155NFTAddress,
       ERC1155Abi,
@@ -90,7 +91,7 @@ const ContractProvider = ({
     setERC721Contract(ERC721Contract);
     loadUserNFTs(ERC1155Contract);
     loadUserNFTs(ERC721Contract);
-  }, [undefined]);
+  }, []);
 
   return (
     <ContractContext.Provider
@@ -98,12 +99,11 @@ const ContractProvider = ({
         loadUserNFTs,
         ERC1155Contract,
         ERC721Contract,
+        provider,
       }}
     >
       {children}{" "}
     </ContractContext.Provider>
   );
 };
-const useContract = () => useContext(ContractContext);
-export { ContractProvider, useContract };
-export default {};
+export const useContract = () => useContext(ContractContext);

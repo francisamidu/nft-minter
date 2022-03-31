@@ -2,6 +2,7 @@ import React, { MouseEventHandler } from "react";
 import { VscArrowRight as ArrowRight } from "react-icons/vsc";
 
 type ButtonProps = {
+  icon?: JSX.Element;
   text: string;
   type?: "button" | "submit";
   onClick?: MouseEventHandler<HTMLButtonElement>;
@@ -15,6 +16,7 @@ const Button = ({
   right = false,
   className,
   type = "button",
+  icon,
 }: ButtonProps) => {
   const handleClick = typeof onClick === "function" ? onClick : () => {};
   if (className) {
@@ -26,6 +28,7 @@ const Button = ({
       >
         {text}
         {right && <ArrowRight className="text-1xl text-white ml-2" />}
+        {icon && icon}
       </button>
     );
   }
