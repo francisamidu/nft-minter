@@ -14,11 +14,10 @@ class AccountHelper {
 
   // Helper method for fetching a connection provider to the Ethereum network
   static getProvider() {
-    const provider = new ethers.providers.JsonRpcProvider();
-    // const provider = new ethers.providers.InfuraProvider(
-    //   "ropsten",
-    //   AccountHelper.getEnvVariable("NEXT_PUBLIC_INFURA_ID", "rosten")
-    // );
+    const provider = new ethers.providers.InfuraProvider(
+      "ropsten",
+      AccountHelper.getEnvVariable("NEXT_PUBLIC_INFURA_ID", "rosten")
+    );
     return provider;
   }
 

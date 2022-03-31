@@ -18,6 +18,10 @@ module.exports = {
       url: `https://polygon-mainnet.infura.io/v3/${infuraId}`,
       accounts: [`0x${privateKey}`],
     },
+    ropsten: {
+      url: `https://ropsten.infura.io/v3/${infuraId}`,
+      accounts: [`0x${privateKey}`],
+    },
   },
   settings: {
     optimizer: {
