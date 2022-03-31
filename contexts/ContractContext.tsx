@@ -77,7 +77,7 @@ export const ContractProvider = ({
     //Blockchain config
     const provider = getProvider();
     const wallet = ethers.Wallet.fromMnemonic(
-      getEnvVariable("NEXT_PUBLIC_MNEMONIC", "")
+      process.env.NEXT_PUBLIC_MNEMONIC
     );
     const signer = wallet.connect(provider);
     setProvider(provider);
