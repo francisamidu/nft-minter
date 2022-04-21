@@ -4,10 +4,17 @@ pragma solidity 0.8.11;
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract ERC721NFT is ERC721URIStorage, Ownable  {
+contract ERC721NFT is ERC721URIStorage, Ownable,ReentrancyGuard  {
     using Counters for Counters.Counter;
     Counters.Counter public _tokenIds;
+  
+    uint256 public cost;
+    uint256 public maxSupply;
+
+    bool public revealed = false;
 
     struct Token {
         uint256 _tokenId;
@@ -19,20 +26,28 @@ contract ERC721NFT is ERC721URIStorage, Ownable  {
 
     mapping (uint256=>Token) public idToTokenItem;
 
-    constructor() ERC721("My NFT","MNFT"){}
+    constructor(
+    string memory _tokenName,
+    string memory _tokenSymbol,
+    uint256 _cost,
+    uint256 _maxSupply
+  ) ERC721 (_tokenName, _tokenSymbol) {
+    setCost(_cost);
+    maxSupply = _maxSupply;
+  }
 
     function _baseURI() internal pure override returns (string memory baseURI) {
         return "https://ipfs.infura.io/ipfs";
     }   
 
-    function mint(address to, string memory tokenURI, uint256 createdAt) public onlyOwner {
+    function mint(address to, string memory _tokenURI, uint256 createdAt) public onlyOwner {
         _tokenIds.increment();
         uint256 tokenId = _tokenIds.current();
         idToTokenItem[tokenId]._tokenId = tokenId;
         idToTokenItem[tokenId]._owner = to;
         idToTokenItem[tokenId]._createdAt = createdAt;
         _safeMint(to, tokenId);
-        _setTokenURI(tokenId, tokenURI);
+        _setTokenURI(tokenId, _tokenURI);
         emit TokenMinted(tokenId, idToTokenItem[tokenId]._createdAt);
     }
 
@@ -58,7 +73,20 @@ contract ERC721NFT is ERC721URIStorage, Ownable  {
         super._beforeTokenTransfer(from, to, _tokenId);
     } 
 
-    // function supportsInterface(bytes4 _interfaceId) public view override(ER721) returns(bool) {
-    //     return super._supportsInterface(_interfaceId);
-    // }
+    function setCost(uint256 _cost) public onlyOwner {
+        cost = _cost;
+    }
+    function tokenURI(uint256 _tokenId) public view virtual override returns (string memory) {
+    require(_exists(_tokenId), 'ERC721Metadata: URI query for nonexistent token');
+
+    string memory currentBaseURI = _baseURI();
+    return bytes(currentBaseURI).length > 0
+        ? string(abi.encodePacked(currentBaseURI, Strings.toString(_tokenId)))
+        : '';
+   }
+
+  function withdraw() public onlyOwner nonReentrant {
+    (bool os, ) = payable(owner()).call{value: address(this).balance}('');
+    require(os);    
+  }
 }

@@ -3,22 +3,21 @@ import Image from "next/image";
 
 import { Asset } from "../types";
 
-const NFT = ({ title, description, image, id, price }: Partial<Asset>) => {
+const NFT = ({ title, image, price, owner }: Partial<Asset>) => {
   return (
-    <div className="py-2 text-center shadow">
-      <h1 className="font-bold text-2xl capitalize color-dark-blue">
-        {title} #{id}
-      </h1>
+    <div className="py-2 rounded-xl shadow min-w-[320px]">
       <Image
         src={image}
         layout="responsive"
         width="400"
         height="300"
-        className="w-full rounded-md"
+        className="w-full rounded-xl"
       />
-      <p>Token Id: #{id}</p>
-      <p>Selling For: {price} Eth</p>
-      <p className="text-gray-600 italic">{description}</p>
+      <div className="p-3">
+        <p className="font-bold">{title}</p>
+        <p className="text-gray-600 my-1">{owner}</p>
+        <p className="font-bold color-primary-secondary">{price} Eth</p>
+      </div>
     </div>
   );
 };

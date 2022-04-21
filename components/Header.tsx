@@ -10,7 +10,7 @@ const Header = () => {
     router.push("/dashboard?tag=mint_an_nft");
   };
   return (
-    <section className="bg-white min-h-screen py-3">
+    <section className="bg-white min-h-screen py-3 dark:bg-gray-800 dark:text-gray-100">
       <div className="md:max-w-screen-xl md:mx-auto flex flex-col sm:flex-row md:justify-center items-center pt-6 sm:mt-36 mt-20 h-full">
         <div className="relative flex flex-row justify-center mr-4">
           <Image

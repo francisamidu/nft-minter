@@ -26,7 +26,7 @@ const features = [
 ];
 const Features = () => {
   return (
-    <section className="md:max-w-screen-lg md:mx-auto bg-[#1B2041] py-8 px-5 flex sm:flex-row flex-col items-center -mt-11 rounded-md">
+    <section className="md:max-w-screen-lg md:mx-auto bg-[#1B2041] py-8 px-5 flex sm:flex-row flex-col items-center -mt-11 rounded-md dark:bg-gray-800 dark:text-gray-100">
       <div className="text-white w-full sm:w-1/3 px-3 text-center mt-4 sm:mt-0">
         <h1 className="font-bold mb-4 text-2xl">Features</h1>
         <p className="w-4/5 mx-auto sm:mx-0 sm:w-full">

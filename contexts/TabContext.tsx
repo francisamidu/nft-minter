@@ -25,11 +25,6 @@ export const TabContextProvider = ({ children }: PropsWithChildren<any>) => {
       active: false,
       name: "Publish to Opensea",
     },
-    {
-      id: uid(),
-      active: false,
-      name: "NFT Stats",
-    },
   ]);
 
   return (

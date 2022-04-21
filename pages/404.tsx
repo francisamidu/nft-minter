@@ -7,7 +7,7 @@ const NotFoundPage = (props: any) => {
       <Head>
         <title>404 - It appears youre lost</title>
       </Head>
-      <main>Ehhh you lost</main>
+      <main className="dark">Ehhh you lost</main>
     </>
   );
 };

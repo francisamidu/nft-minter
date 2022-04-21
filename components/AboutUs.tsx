@@ -4,7 +4,7 @@ import { useApp } from "../contexts";
 const AboutUs = () => {
   const { name } = useApp();
   return (
-    <section className="py-14 bg-[#1b2041] mt-1">
+    <section className="py-14 bg-[#1b2041] mt-1 dark:bg-gray-800 dark:text-gray-100">
       <div className="md:max-w-screen-lg md:m-auto text-center">
         <div className="flex flex-col ml-4 p-4">
           <h1 className="text-white font-bold text-3xl mb-4 ">About {name}</h1>

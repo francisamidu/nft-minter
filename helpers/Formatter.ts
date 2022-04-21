@@ -22,14 +22,19 @@ class Formatter {
     const year = newDate.getFullYear();
     return `${day}, ${month} ${year}`;
   }
-  static formatNote(note: any) {
-    return {
-      id: note["id"],
-      createdAt: note["createdAt"],
-      deleted: note["deleted"],
-      text: note["text"],
-      pinned: note["pinned"],
-    };
+  static formatCurrency(num: number | string) {
+    const newNumber = Number(num);
+    if (typeof newNumber === "number") {
+      const formatter = new Intl.NumberFormat("en-Us", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      });
+      return formatter.format(newNumber);
+    } else {
+      throw new Error(`${num} is not a number`);
+    }
   }
 }
 export default Formatter;

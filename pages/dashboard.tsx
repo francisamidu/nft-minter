@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { ComponentWrapper, Layout, MintNFT, NotFound } from "../components";
+import {
+  Assets,
+  ComponentWrapper,
+  Layout,
+  MintNFT,
+  NotFound,
+  PublishToOpensea,
+  ViewNFT,
+} from "../components";
 import { NextComponentType } from "next";
 
 const MintNFTs = () => {
-  const [component, setComponent] = useState("");
+  const [component, setComponent] = useState("mint_an_nft");
   const router = useRouter();
   const { query } = router;
 
@@ -20,6 +28,27 @@ const MintNFTs = () => {
   const getContent = () => {
     if (component) {
       switch (component) {
+        case "view_nft": {
+          return (
+            <ComponentWrapper>
+              <ViewNFT />
+            </ComponentWrapper>
+          );
+        }
+        case "assets": {
+          return (
+            <ComponentWrapper>
+              <Assets />
+            </ComponentWrapper>
+          );
+        }
+        case "publish_to_opensea": {
+          return (
+            <ComponentWrapper>
+              <PublishToOpensea />
+            </ComponentWrapper>
+          );
+        }
         default: {
           return (
             <ComponentWrapper>

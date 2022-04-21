@@ -1,12 +1,9 @@
 import { AppProps } from "next/app";
-import { PropsWithChildren, ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 import "../styles/index.scss";
-import "../node_modules/tailwindcss/tailwind.css";
+import "tailwindcss/tailwind.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-
-import { Web3ReactProvider } from "@web3-react/core";
-import { ExternalProvider, Web3Provider } from "@ethersproject/providers";
 
 import {
   AppContextProvider,
@@ -24,23 +21,19 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-const getLibrary = (provider: ExternalProvider) => new Web3Provider(provider);
-
 const App = ({ Component, pageProps }: AppPropsWithLayout): unknown => {
   const getLayout = Component.getLayout ?? ((page) => page);
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
+    <ContractProvider>
       <AppContextProvider>
-        <ContractProvider>
-          <AssetsContextProvider>
-            <ToastContainer />
-            <TabContextProvider>
-              {getLayout(<Component {...pageProps} />)}
-            </TabContextProvider>
-          </AssetsContextProvider>
-        </ContractProvider>
+        <AssetsContextProvider>
+          <ToastContainer />
+          <TabContextProvider>
+            {getLayout(<Component {...pageProps} />)}
+          </TabContextProvider>
+        </AssetsContextProvider>
       </AppContextProvider>
-    </Web3ReactProvider>
+    </ContractProvider>
   );
 };
 

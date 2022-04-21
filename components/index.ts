@@ -1,10 +1,10 @@
+import Assets from "./Assets";
 import Button from "./Button";
 import Layout from "./Layout";
 import Header from "./Header";
 import Nav from "./Nav";
 import NFT from "./NFT";
-import NFTCard from "./NFTCard";
-import NFTList from "./NFTList";
+import NFTItem from "./NFTItem";
 import AboutUs from "./AboutUs";
 import Features from "./Features";
 import Cta from "./Cta";
@@ -14,9 +14,12 @@ import OptionTabs from "./OptionTabs";
 import TabWrapper from "./TabWrapper";
 import MintNFT from "./MintNFT";
 import NotFound from "./NotFound";
+import PublishToOpensea from "./PublishToOpensea";
+import ViewNFT from "./ViewNFT";
 
 export {
   AboutUs,
+  Assets,
   Button,
   Cta,
   ComponentWrapper,
@@ -26,10 +29,11 @@ export {
   Layout,
   Nav,
   NFT,
-  NFTCard,
-  NFTList,
+  NFTItem,
   NotFound,
   MintNFT,
   OptionTabs,
+  PublishToOpensea,
   TabWrapper,
+  ViewNFT,
 };

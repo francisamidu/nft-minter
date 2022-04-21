@@ -4,9 +4,9 @@ pragma solidity ^0.8.7;
 import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "hardhat/console.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract ERC1155NFT is ERC1155,Ownable {
+contract ERC1155NFT is ERC1155,Ownable, ReentrancyGuard {
     uint256 public _tokenId;    
 
     event TokenMinted(uint256 id);
@@ -77,7 +77,7 @@ contract ERC1155NFT is ERC1155,Ownable {
       }
     }
 
-    function withdraw() public onlyOwner {
+    function withdraw() public onlyOwner nonReentrant{
         uint256 balance = address(this).balance;
         require(balance > 0, "Not enough funds to withdraw");
         payable(msg.sender).transfer(balance);
@@ -107,8 +107,7 @@ contract ERC1155NFT is ERC1155,Ownable {
     
     function uri(uint256 _tokenID) override public pure returns (string memory) {
     
-       string memory hexstringtokenID;
-       hexstringtokenID = uint2hexstr(_tokenID);
+       string memory hexstringtokenID = uint2hexstr(_tokenID);
     
         return string(
             abi.encodePacked(

@@ -26,9 +26,9 @@ const TaskTab = ({ setTabs, tabs }: OptionTabs) => {
           className={`cursor-pointer -mb-[.15rem] py-2 px-2 border-b-2 border-transparent ${
             tab.active && "border-blue-500"
           }`}
+          onClick={() => toggleTab(tab.id)}
         >
           <span
-            onClick={() => toggleTab(tab.id)}
             className={`text-sm font-bold ${tab.active && "text-blue-500"}`}
           >
             {tab.name}

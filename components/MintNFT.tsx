@@ -1,25 +1,28 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-
 import { Button } from ".";
 import Image from "next/image";
-import { useApp, useContract } from "../contexts";
+import { useApp, useAssets, useContract } from "../contexts";
 import { toast } from "react-toastify";
 import { ipfs } from "../helpers";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 const MintNFT = () => {
-  const { account, connectWallet } = useApp();
-  const { loadUserNFTs, ERC1155Contract, ERC721Contract } = useContract();
+  const { account, active } = useApp();
+  const { ERC1155Contract, ERC721Contract } = useContract();
+  const { setNft: setAsset } = useAssets();
   const input = useRef(null);
   const [selectedImage, setSelectedImage] = useState<Blob | MediaSource>(null);
   const [nft, setNft] = useState<{
+    amount?: number;
     name: string;
     description: string;
     type: "" | "ERC721" | "ERC1155";
     image: string;
   }>({
+    amount: 1,
     name: "",
     description: "",
-    type: "ERC1155",
+    type: "ERC721",
     image: "",
   });
   const handleChange = (event: ChangeEvent<any>) => {
@@ -30,6 +33,7 @@ const MintNFT = () => {
   };
   const resetFields = () => {
     setNft({
+      amount: 1,
       name: "",
       description: "",
       type: "",
@@ -38,26 +42,49 @@ const MintNFT = () => {
     setSelectedImage(null);
   };
   const completeNftCreation = async () => {
+    if (!account && !active) {
+      toast.error("Connect your wallet and try again");
+      return;
+    }
     try {
       if (nft.type === "ERC721") {
         const image: any = selectedImage;
         const request = await ipfs.add(image);
-        const url = `${request.path}`;
+        const url = `https://ipfs.infura.io/ipfs/${request.path}`;
         setNft({
           ...nft,
           image: url,
         });
         const file: any = nft;
-        const data = JSON.stringify(file);
+        const data: any = JSON.stringify(file);
         const response = await ipfs.add(data);
-        const nftUrl = `${response.path}`;
+        const nftUrl = `https://ipfs.infura.io/ipfs/${response.path}`;
         const transaction = await ERC721Contract.mint(
           account,
           nftUrl,
           Date.now()
         );
         const tx = await transaction.wait();
-        console.log(tx);
+        toast.success("NFT Minted. View it under 'View NFT' tab");
+        const tokenId = tx.events[1].args[0].toString();
+
+        const tokenUri = await ERC721Contract.tokenURI(tokenId);
+        let item = await ERC721Contract.idToTokenItem(tokenId);
+        item = {
+          id: Number(item._tokenId.toString()),
+          owner: item._owner,
+          image: tokenUri,
+          createdAt: new Date(Number(item._createdAt.toString())),
+        };
+        setAsset(item);
+        setNft({
+          ...nft,
+          description: "",
+          amount: 0,
+          image: "",
+          name: "",
+          type: "ERC721",
+        });
       } else if (nft.type == "ERC1155") {
         const image: any = selectedImage;
         const request = await ipfs.add(image);
@@ -71,11 +98,36 @@ const MintNFT = () => {
         const response = await ipfs.add(data);
         const transaction = await ERC1155Contract.mintNFT(
           account,
-          5,
-          Date.now()
+          nft.amount,
+          Date.now(),
+          "0x00"
         );
         const tx = await transaction.wait();
-        console.log(tx);
+
+        if (nft.amount > 1) {
+          toast.success("NFT(s) Minted");
+        } else {
+          const tokenId = tx.events[1].args[0].toString();
+          const tokenUri = await ERC721Contract.tokenURI(tokenId);
+          let item = await ERC721Contract.idToTokenItem(tokenId);
+          item = {
+            id: Number(item._tokenId.toString()),
+            owner: item._owner,
+            image: tokenUri,
+            createdAt: new Date(Number(item._createdAt.toString())),
+          };
+          setAsset(item);
+          toast.success("NFT(s) Minted. View it under 'View NFT' tab");
+        }
+
+        setNft({
+          ...nft,
+          description: "",
+          amount: 0,
+          image: "",
+          name: "",
+          type: "ERC721",
+        });
       }
     } catch (error) {
       console.log(error);
@@ -95,7 +147,7 @@ const MintNFT = () => {
     }
 
     if (!account) {
-      toast.error("Please connect to your wallet first")
+      toast.error("Please connect to your wallet first");
     } else {
       completeNftCreation();
     }
@@ -202,6 +254,40 @@ const MintNFT = () => {
             />
             <label htmlFor="switcher"></label>
           </div>
+          {nft.type === "ERC1155" && (
+            <div className="flex flex-col my-6">
+              <label htmlFor="amount" className="font-bold mb-4">
+                Amount
+              </label>
+              <div className="flex flex-row items-center">
+                <AiOutlineMinus
+                  className={
+                    nft.amount > 0
+                      ? "cursor-pointer text-black"
+                      : "cursor-pointer text-gray-400"
+                  }
+                  onClick={() => {
+                    if (nft.amount > 1) {
+                      setNft({
+                        ...nft,
+                        amount: --nft.amount,
+                      });
+                    }
+                  }}
+                />
+                <span className="font-bold mx-4">{nft.amount}</span>
+                <AiOutlinePlus
+                  className="cursor-pointer text-black"
+                  onClick={() =>
+                    setNft({
+                      ...nft,
+                      amount: ++nft.amount,
+                    })
+                  }
+                />
+              </div>
+            </div>
+          )}
           <div className="flex flex-row items-center mt-4 justify-self-end">
             <Button text="Mint NFT" type="submit" />
             <Button

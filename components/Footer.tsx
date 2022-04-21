@@ -34,7 +34,7 @@ const Footer = () => {
     },
   ]);
   return (
-    <footer className="sm:max-w-screen-xl mx-auto px-4">
+    <footer className="sm:max-w-screen-xl mx-auto px-4 dark:bg-gray-800 dark:text-gray-100">
       <div className="flex flex-col sm:flex-row py-4 border-t-2 shadow-t-sm justify-between items-center">
         <h1 className="text-1xl font-bold capitalize">{name}</h1>
         <p className="my-4 sm:my-0">
