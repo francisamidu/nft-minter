@@ -404,8 +404,8 @@
       ]
     },
     "E:\\Genius\\Dev\\web\\blockchain-projects\\nft-minter\\contracts\\ERC721NFT.sol": {
-      "lastModificationDate": 1650504102373,
-      "contentHash": "c43796085244a74fe754010c4b94d1c8",
+      "lastModificationDate": 1650577080105,
+      "contentHash": "cfb7bb9f72ba4c3145af27c0ade086eb",
       "sourceName": "contracts/ERC721NFT.sol",
       "solcConfig": {
         "version": "0.8.11",
@@ -597,8 +597,8 @@
       ]
     },
     "E:\\Genius\\Dev\\web\\blockchain-projects\\nft-minter\\contracts\\ERC1155NFT.sol": {
-      "lastModificationDate": 1649963469946,
-      "contentHash": "78495bef954fef02a5386e38235fef21",
+      "lastModificationDate": 1650582060964,
+      "contentHash": "12ed14d3bef8e922a1024e21c23ae5da",
       "sourceName": "contracts/ERC1155NFT.sol",
       "solcConfig": {
         "version": "0.8.11",
@@ -625,12 +625,12 @@
       },
       "imports": [
         "@openzeppelin/contracts/token/ERC1155/ERC1155.sol",
-        "@openzeppelin/contracts/utils/Strings.sol",
         "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/security/ReentrancyGuard.sol"
+        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "./Strings.sol"
       ],
       "versionPragmas": [
-        "^0.8.7"
+        "^0.8.11"
       ],
       "artifacts": [
         "ERC1155NFT"
@@ -741,6 +741,41 @@
       ],
       "artifacts": [
         "ReentrancyGuard"
+      ]
+    },
+    "E:\\Genius\\Dev\\web\\blockchain-projects\\nft-minter\\contracts\\Strings.sol": {
+      "lastModificationDate": 1650580996620,
+      "contentHash": "57ddd84e95742e2b3c3cc00eeb617325",
+      "sourceName": "contracts/Strings.sol",
+      "solcConfig": {
+        "version": "0.8.11",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.11"
+      ],
+      "artifacts": [
+        "Strings"
       ]
     }
   }

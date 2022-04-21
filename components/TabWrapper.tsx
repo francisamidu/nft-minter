@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { FaUser as IUser, FaMoneyBill as IMoney } from "react-icons/fa";
 import router from "next/router";
 
-import { useApp, useTabs } from "../contexts";
+import { useWallet, useTabs } from "../contexts";
 import { OptionTabs } from ".";
 import { Tab } from "../types";
 import millify from "millify";
 
 const TabWrapper = () => {
   const { tabs, setTabs: setActiveTab } = useTabs();
-  const { account, active, balance: accountBalance } = useApp();
+  const { account, active, balance: accountBalance } = useWallet();
   const [balance, setBalance] = useState<string | number>("0x00");
   const [trimmedAddress, setTrimmedAddress] = useState("0x00");
   const setTabs = (tabs: Tab[]) => {

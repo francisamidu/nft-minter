@@ -10,6 +10,7 @@ import {
   AssetsContextProvider,
   ContractProvider,
   TabContextProvider,
+  WalletContextProvider,
 } from "../contexts";
 import { NextPage } from "next";
 
@@ -25,14 +26,16 @@ const App = ({ Component, pageProps }: AppPropsWithLayout): unknown => {
   const getLayout = Component.getLayout ?? ((page) => page);
   return (
     <ContractProvider>
-      <AppContextProvider>
-        <AssetsContextProvider>
-          <ToastContainer />
-          <TabContextProvider>
-            {getLayout(<Component {...pageProps} />)}
-          </TabContextProvider>
-        </AssetsContextProvider>
-      </AppContextProvider>
+      <WalletContextProvider>
+        <AppContextProvider>
+          <AssetsContextProvider>
+            <ToastContainer />
+            <TabContextProvider>
+              {getLayout(<Component {...pageProps} />)}
+            </TabContextProvider>
+          </AssetsContextProvider>
+        </AppContextProvider>
+      </WalletContextProvider>
     </ContractProvider>
   );
 };

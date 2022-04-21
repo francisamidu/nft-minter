@@ -1,13 +1,16 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.11;
 
 import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
-import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "./Strings.sol";
 
 contract ERC1155NFT is ERC1155,Ownable, ReentrancyGuard {
+    using Strings for string;
+
     uint256 public _tokenId;    
+    string baseURI;
 
     event TokenMinted(uint256 id);
     event BalanceWithdrawn(address indexed beneficiary,uint256 amount);
@@ -20,9 +23,10 @@ contract ERC1155NFT is ERC1155,Ownable, ReentrancyGuard {
     }
 
     mapping (uint256=>Token) public idToTokenItem;
-    mapping (uint256 => string) private _tokenURIs;
 
-    constructor(string memory _uri) ERC1155(_uri){}
+    constructor(string memory _uri) ERC1155(_uri)public{
+        setBaseMetadataURI(_uri);
+    }
 
     function burnNFT(address _account, uint256 _id, uint256 _amount) public {
         require(msg.sender == _account);
@@ -84,35 +88,21 @@ contract ERC1155NFT is ERC1155,Ownable, ReentrancyGuard {
         emit BalanceWithdrawn(msg.sender, balance);
     }
 
-    function uint2hexstr(uint256 i) public pure returns (string memory) {
-        if (i == 0) return "0";
-        uint j = i;
-        uint length;
-        while (j != 0) {
-            length++;
-            j = j >> 4;
-        }
-        uint mask = 15;
-        bytes memory bstr = new bytes(length);
-        uint k = length;
-        while (i != 0) {
-            uint curr = (i & mask);
-            bstr[--k] = curr > 9 ?
-                bytes1(uint8(55 + curr)) :
-                bytes1(uint8(48 + curr)); // 55 = 65 - 10
-            i = i >> 4;
-        }
-        return string(bstr);
+    /**
+   * @dev Will update the base URL of token's URI
+   * @param _newBaseMetadataURI New base URL of token's URI
+   */
+    function setBaseMetadataURI(
+        string memory _newBaseMetadataURI
+    ) public onlyOwner {
+        baseURI = _newBaseMetadataURI;
     }
     
-    function uri(uint256 _tokenID) override public pure returns (string memory) {
-    
-       string memory hexstringtokenID = uint2hexstr(_tokenID);
-    
-        return string(
-            abi.encodePacked(
-            "ipfs://f0",
-            hexstringtokenID)
-            );
-        }
+ function uri(
+    uint256 _id
+  ) public view override returns (string memory) {
+    return Strings.strConcat(
+      baseURI,
+      Strings.uint2str(_id));
+  }
 }

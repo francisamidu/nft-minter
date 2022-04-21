@@ -4,7 +4,7 @@ import NFT from "./NFT";
 
 const ViewNFT = () => {
   const { nft } = useAssets();
-  const exists = Object.values(nft).every((val) => !!val);
+  const exists = nft ? Object.values(nft).every((val) => !!val) : false;
   return (
     <section className="flex flex-col justify-center items-center mt-5">
       {exists ? (

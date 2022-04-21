@@ -1,14 +1,21 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Button } from ".";
 import Image from "next/image";
-import { useApp, useAssets, useContract } from "../contexts";
+import { useAssets, useWallet } from "../contexts";
 import { toast } from "react-toastify";
 import { ipfs } from "../helpers";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import Modal from "web3modal";
+import { ethers } from "ethers";
+import {
+  ERC1155Abi,
+  ERC1155NFTAddress,
+  ERC721Abi,
+  ERC721NFTAddress,
+} from "../config";
 
 const MintNFT = () => {
-  const { account, active } = useApp();
-  const { ERC1155Contract, ERC721Contract } = useContract();
+  const { account, active } = useWallet();
   const { setNft: setAsset } = useAssets();
   const input = useRef(null);
   const [selectedImage, setSelectedImage] = useState<Blob | MediaSource>(null);
@@ -47,6 +54,24 @@ const MintNFT = () => {
       return;
     }
     try {
+      //Connect to wallet
+      const modal = new Modal();
+      const connection = await modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
+      const signer = provider.getSigner();
+
+      const ERC721Contract = new ethers.Contract(
+        ERC721NFTAddress,
+        ERC721Abi,
+        signer
+      );
+
+      const ERC1155Contract = new ethers.Contract(
+        ERC1155NFTAddress,
+        ERC1155Abi,
+        signer
+      );
+
       if (nft.type === "ERC721") {
         const image: any = selectedImage;
         const request = await ipfs.add(image);
@@ -95,7 +120,7 @@ const MintNFT = () => {
         });
         const file: any = nft;
         const data = JSON.stringify(file);
-        const response = await ipfs.add(data);
+        await ipfs.add(data);
         const transaction = await ERC1155Contract.mintNFT(
           account,
           nft.amount,

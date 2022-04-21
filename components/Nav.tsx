@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { uid } from "../helpers";
-import { useApp } from "../contexts";
+import { useApp, useWallet } from "../contexts";
 import Link from "next/link";
 import millify from "millify";
 import { Button } from ".";
@@ -28,16 +28,13 @@ const Nav = () => {
       text: "Assets",
     },
   ]);
+  const { name, darkMode, setData, year } = useApp();
   const {
     account,
     active,
     balance: accountBalance,
     connectWallet,
-    name,
-    darkMode,
-    setData,
-    year,
-  } = useApp();
+  } = useWallet();
   const setLinkState = (id: string) => {
     setLinks(
       links.map((link) => {
@@ -109,9 +106,6 @@ const Nav = () => {
               }`}
               onClick={() =>
                 setData({
-                  active,
-                  account,
-                  balance: accountBalance,
                   darkMode: !darkMode,
                   name,
                   year,

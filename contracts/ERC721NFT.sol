@@ -37,7 +37,7 @@ contract ERC721NFT is ERC721URIStorage, Ownable,ReentrancyGuard  {
   }
 
     function _baseURI() internal pure override returns (string memory baseURI) {
-        return "https://ipfs.infura.io/ipfs";
+        return "https://ipfs.infura.io/ipfs/";
     }   
 
     function mint(address to, string memory _tokenURI, uint256 createdAt) public onlyOwner {
@@ -76,14 +76,7 @@ contract ERC721NFT is ERC721URIStorage, Ownable,ReentrancyGuard  {
     function setCost(uint256 _cost) public onlyOwner {
         cost = _cost;
     }
-    function tokenURI(uint256 _tokenId) public view virtual override returns (string memory) {
-    require(_exists(_tokenId), 'ERC721Metadata: URI query for nonexistent token');
-
-    string memory currentBaseURI = _baseURI();
-    return bytes(currentBaseURI).length > 0
-        ? string(abi.encodePacked(currentBaseURI, Strings.toString(_tokenId)))
-        : '';
-   }
+    
 
   function withdraw() public onlyOwner nonReentrant {
     (bool os, ) = payable(owner()).call{value: address(this).balance}('');

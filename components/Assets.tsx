@@ -1,38 +1,42 @@
-import { Contract } from "ethers";
+import { Contract, ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { NFTItem } from ".";
-import { ERC1155NFTAddress } from "../config";
-import { useApp, useContract } from "../contexts";
+import { useWallet } from "../contexts";
 import { uid } from "../helpers";
+import {
+  ERC1155Abi,
+  ERC1155NFTAddress,
+  ERC721Abi,
+  ERC721NFTAddress,
+} from "../config";
 
 const Asset = () => {
-  const { active, account } = useApp();
-  const { ERC1155Contract, ERC721Contract } = useContract();
+  const { active, account } = useWallet();
   const [erc721NFTs, setErc721Nfts] = useState([]);
   const [erc1155NFTs, setErc1155Nfts] = useState([]);
   const [assets, setAssets] = useState([]);
   const loadUserNFTs = async (contract: Contract) => {
     try {
       const isERC1155 = contract?.address === ERC1155NFTAddress;
-      if (!ERC1155Contract && !ERC721Contract) {
-        toast.error("Connect your wallet first");
-        return;
-      }
       if (isERC1155) {
-        let tokenIds = await contract._tokenId();
+        let tokenIds = await contract?._tokenId();
         tokenIds = tokenIds.toNumber();
         let items = [];
         for (let id = 0; id <= tokenIds; id++) {
           if (id) {
-            const tokenUri = await contract.uri(id);
-            let item = await contract.idToTokenItem(id);
+            let tokenUri = await contract?.uri(id);
+            console.log(tokenUri)
+            const request = await fetch(tokenUri);
+            const meta = await request.json();
+            let item = await contract?.idToTokenItem(id);
             item = {
               amount: item.tokens.toNumber(),
               createdAt: new Date(item?.createdAt?.Number()) || new Date(),
               id: item?.tokenId?.toNumber() || uid(),
               owner: item?.owner,
-              image: tokenUri,
+              image: meta.image,
+              tokenUri,
             };
             items.push(item);
           }
@@ -46,12 +50,16 @@ const Asset = () => {
         for (let id = 0; id <= tokenIds; id++) {
           if (id) {
             const tokenUri = await contract.tokenURI(id);
+            console.log(tokenUri);
+            const request = await fetch(tokenUri);
+            const meta = await request.json();
             let item = await contract.idToTokenItem(id);
             item = {
               id: Number(item?._tokenId?.toNumber()) || uid(),
               owner: item?._owner,
               createdAt: new Date(item?._createdAt?.toNumber()),
-              image: tokenUri,
+              image: meta.image,
+              tokenUri,
             };
             items.push(item);
           }
@@ -64,19 +72,33 @@ const Asset = () => {
     }
     setAssets([erc1155NFTs, erc721NFTs].flat(Infinity));
   };
+  const loadAssets = () => {
+    try {
+      const provider = new ethers.providers.JsonRpcProvider(
+        `https://ropsten.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`
+      );
 
-  useEffect(() => {
-    if (ERC1155Contract) {
+      const ERC1155Contract = new ethers.Contract(
+        ERC1155NFTAddress,
+        ERC1155Abi,
+        provider
+      );
+      const ERC721Contract = new ethers.Contract(
+        ERC721NFTAddress,
+        ERC721Abi,
+        provider
+      );
       loadUserNFTs(ERC1155Contract);
+      loadUserNFTs(ERC721Contract);
+    } catch (error) {
+      console.log(error);
+      toast.error("Couldnt load assets");
     }
-  }, [ERC1155Contract]);
+  };
 
   useEffect(() => {
-    if (ERC721Contract) {
-      loadUserNFTs(ERC721Contract);
-    }
-  }, [ERC721Contract]);
-  if (!active && !account) toast.error("Connect wallet to see your assets");
+    loadAssets();
+  }, []);
   return (
     <section className="p-4">
       {assets.length ? (
