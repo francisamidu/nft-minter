@@ -26,7 +26,6 @@ const Asset = () => {
         for (let id = 0; id <= tokenIds; id++) {
           if (id) {
             let tokenUri = await contract?.uri(id);
-            console.log(tokenUri)
             const request = await fetch(tokenUri);
             const meta = await request.json();
             let item = await contract?.idToTokenItem(id);
@@ -50,7 +49,6 @@ const Asset = () => {
         for (let id = 0; id <= tokenIds; id++) {
           if (id) {
             const tokenUri = await contract.tokenURI(id);
-            console.log(tokenUri);
             const request = await fetch(tokenUri);
             const meta = await request.json();
             let item = await contract.idToTokenItem(id);

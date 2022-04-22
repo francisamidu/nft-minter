@@ -2,14 +2,15 @@
 pragma solidity ^0.8.11;
 
 import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
-import "@openzeppelin/contracts/access/Ownable.sol";
+// import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./Strings.sol";
 
-contract ERC1155NFT is ERC1155,Ownable, ReentrancyGuard {
+contract ERC1155NFT is ERC1155, ReentrancyGuard {
     using Strings for string;
 
     uint256 public _tokenId;    
+    mapping(uint256 => string) public idToTokenUri;
     string baseURI;
 
     event TokenMinted(uint256 id);
@@ -24,7 +25,7 @@ contract ERC1155NFT is ERC1155,Ownable, ReentrancyGuard {
 
     mapping (uint256=>Token) public idToTokenItem;
 
-    constructor(string memory _uri) ERC1155(_uri)public{
+    constructor(string memory _uri) ERC1155(_uri){
         setBaseMetadataURI(_uri);
     }
 
@@ -34,7 +35,7 @@ contract ERC1155NFT is ERC1155,Ownable, ReentrancyGuard {
     }
 
 
-    function mintNFT(address account, uint256 amount, uint256 createdAt, bytes memory data) public onlyOwner {
+    function mintNFT(address account, uint256 amount, string memory tokenUri ,uint256 createdAt, bytes memory data) public {
         _tokenId++;        
         
         if(idToTokenItem[_tokenId].owner != address(0)){
@@ -45,6 +46,8 @@ contract ERC1155NFT is ERC1155,Ownable, ReentrancyGuard {
             idToTokenItem[_tokenId].tokenId = _tokenId;
             idToTokenItem[_tokenId].createdAt = createdAt;
         }      
+
+        idToTokenUri[_tokenId] = tokenUri;
 
         _mint(account, _tokenId, amount, bytes(data));
         emit TokenMinted(_tokenId);
@@ -65,11 +68,11 @@ contract ERC1155NFT is ERC1155,Ownable, ReentrancyGuard {
         return items;
     }
 
-    function transferNFT(uint256 tokenId, address _to, uint256 _amount) public onlyOwner {
+    function transferNFT(uint256 tokenId, address _to, uint256 _amount) public {
         _safeTransferFrom(msg.sender,_to, tokenId, _amount, "0x0");
     }
 
-    function transferOwnership(address _newOwner) public onlyOwner override {
+    function transferOwnership(address _newOwner) public {
       uint256 totalItemCount = _tokenId;      
       
       for(uint i =0; i < totalItemCount; i++){
@@ -81,7 +84,7 @@ contract ERC1155NFT is ERC1155,Ownable, ReentrancyGuard {
       }
     }
 
-    function withdraw() public onlyOwner nonReentrant{
+    function withdraw() public nonReentrant{
         uint256 balance = address(this).balance;
         require(balance > 0, "Not enough funds to withdraw");
         payable(msg.sender).transfer(balance);
@@ -94,7 +97,7 @@ contract ERC1155NFT is ERC1155,Ownable, ReentrancyGuard {
    */
     function setBaseMetadataURI(
         string memory _newBaseMetadataURI
-    ) public onlyOwner {
+    ) public {
         baseURI = _newBaseMetadataURI;
     }
     
@@ -103,6 +106,6 @@ contract ERC1155NFT is ERC1155,Ownable, ReentrancyGuard {
   ) public view override returns (string memory) {
     return Strings.strConcat(
       baseURI,
-      Strings.uint2str(_id));
+      idToTokenUri[_id]);
   }
 }

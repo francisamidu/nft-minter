@@ -404,8 +404,8 @@
       ]
     },
     "E:\\Genius\\Dev\\web\\blockchain-projects\\nft-minter\\contracts\\ERC721NFT.sol": {
-      "lastModificationDate": 1650577080105,
-      "contentHash": "cfb7bb9f72ba4c3145af27c0ade086eb",
+      "lastModificationDate": 1650663699420,
+      "contentHash": "4097fece99a3669e90df873989bda99e",
       "sourceName": "contracts/ERC721NFT.sol",
       "solcConfig": {
         "version": "0.8.11",
@@ -432,7 +432,6 @@
       },
       "imports": [
         "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
-        "@openzeppelin/contracts/access/Ownable.sol",
         "@openzeppelin/contracts/utils/Counters.sol",
         "@openzeppelin/contracts/utils/Strings.sol",
         "@openzeppelin/contracts/security/ReentrancyGuard.sol"
@@ -597,8 +596,8 @@
       ]
     },
     "E:\\Genius\\Dev\\web\\blockchain-projects\\nft-minter\\contracts\\ERC1155NFT.sol": {
-      "lastModificationDate": 1650582060964,
-      "contentHash": "12ed14d3bef8e922a1024e21c23ae5da",
+      "lastModificationDate": 1650663801018,
+      "contentHash": "e36f465a1d16ea4341fe961aa7b07ad9",
       "sourceName": "contracts/ERC1155NFT.sol",
       "solcConfig": {
         "version": "0.8.11",
@@ -625,7 +624,6 @@
       },
       "imports": [
         "@openzeppelin/contracts/token/ERC1155/ERC1155.sol",
-        "@openzeppelin/contracts/access/Ownable.sol",
         "@openzeppelin/contracts/security/ReentrancyGuard.sol",
         "./Strings.sol"
       ],

@@ -13,6 +13,7 @@ import {
   ERC721Abi,
   ERC721NFTAddress,
 } from "../config";
+import { nextTick } from "process";
 
 const MintNFT = () => {
   const { account, active } = useWallet();
@@ -75,7 +76,8 @@ const MintNFT = () => {
       if (nft.type === "ERC721") {
         const image: any = selectedImage;
         const request = await ipfs.add(image);
-        const url = `https://ipfs.infura.io/ipfs/${request.path}`;
+        const url = `${request.path}`;
+        console.log("Image url", url);
         setNft({
           ...nft,
           image: url,
@@ -83,7 +85,7 @@ const MintNFT = () => {
         const file: any = nft;
         const data: any = JSON.stringify(file);
         const response = await ipfs.add(data);
-        const nftUrl = `https://ipfs.infura.io/ipfs/${response.path}`;
+        const nftUrl = `${response.path}`;
         const transaction = await ERC721Contract.mint(
           account,
           nftUrl,
@@ -94,11 +96,12 @@ const MintNFT = () => {
         const tokenId = tx.events[1].args[0].toString();
 
         const tokenUri = await ERC721Contract.tokenURI(tokenId);
+        const meta = await (await fetch(tokenUri)).json();
         let item = await ERC721Contract.idToTokenItem(tokenId);
         item = {
           id: Number(item._tokenId.toString()),
           owner: item._owner,
-          image: tokenUri,
+          image: meta.image,
           createdAt: new Date(Number(item._createdAt.toString())),
         };
         setAsset(item);
@@ -120,10 +123,11 @@ const MintNFT = () => {
         });
         const file: any = nft;
         const data = JSON.stringify(file);
-        await ipfs.add(data);
+        const nftUrl = await ipfs.add(data);
         const transaction = await ERC1155Contract.mintNFT(
           account,
           nft.amount,
+          `${nftUrl.path}`,
           Date.now(),
           "0x00"
         );
@@ -134,11 +138,12 @@ const MintNFT = () => {
         } else {
           const tokenId = tx.events[1].args[0].toString();
           const tokenUri = await ERC721Contract.tokenURI(tokenId);
+          const meta = await (await fetch(tokenUri)).json();
           let item = await ERC721Contract.idToTokenItem(tokenId);
           item = {
             id: Number(item._tokenId.toString()),
             owner: item._owner,
-            image: tokenUri,
+            image: meta.image,
             createdAt: new Date(Number(item._createdAt.toString())),
           };
           setAsset(item);

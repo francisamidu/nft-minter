@@ -7,16 +7,6 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { toast } from "react-toastify";
-import { useContract } from ".";
-import { ethers } from "ethers";
-import Web3Modal from "web3modal";
-import {
-  ERC721NFTAddress,
-  ERC721Abi,
-  ERC1155NFTAddress,
-  ERC1155Abi,
-} from "../config";
 
 type AppValues = {
   darkMode: boolean;
