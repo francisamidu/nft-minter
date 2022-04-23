@@ -40,7 +40,7 @@ const Asset = () => {
             items.push(item);
           }
         }
-        setErc1155Nfts(items);
+        setAssets([...assets, items]);
       } else {
         let tokenIds = await contract._tokenIds();
         tokenIds = tokenIds.toNumber();
@@ -62,13 +62,13 @@ const Asset = () => {
             items.push(item);
           }
         }
-        setErc721Nfts(items);
+        setAssets([...assets, items]);
       }
     } catch (error) {
       console.log(error);
       toast.error("Couldnt get NFT data");
     }
-    setAssets([erc1155NFTs, erc721NFTs].flat(Infinity));
+    console.log(assets);
   };
   const loadAssets = () => {
     try {

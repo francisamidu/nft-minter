@@ -98,6 +98,7 @@ const MintNFT = () => {
         let item = await ERC721Contract.idToTokenItem(tokenId);
         item = {
           id: Number(item._tokenId.toString()),
+          price: Number(ethers.utils.parseEther(item.price)),
           owner: item._owner,
           image: meta.image,
           createdAt: new Date(Number(item._createdAt.toString())),
