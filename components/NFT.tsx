@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import { Asset } from "../types";
 
-const NFT = ({ title, image, owner }: Partial<Asset>) => {
+const NFT = ({ name, image, owner }: Partial<Asset>) => {
   return (
     <div className="py-2 rounded-xl shadow min-w-[320px]">
       <Image
@@ -14,7 +14,7 @@ const NFT = ({ title, image, owner }: Partial<Asset>) => {
         className="w-full rounded-xl"
       />
       <div className="p-3">
-        <p className="font-bold">{title}</p>
+        <p className="font-bold">{name}</p>
         <p className="text-gray-600 my-1">{owner}</p>
       </div>
     </div>
