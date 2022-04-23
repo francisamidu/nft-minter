@@ -5,8 +5,8 @@ import ERC721ContractAbi from "./artifacts/contracts/ERC721NFT.sol/ERC721NFT.jso
 // const ERC721NFTAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 
 // Production address
-const ERC1155NFTAddress = "0x513E6122f7BAfE58b324A78E5486Af2313f91268";
-const ERC721NFTAddress = "0x85c43E2F3d15fe4E8e5AC2bd25942D169E44F441";
+const ERC1155NFTAddress = "0x774417f5DEe250D3cDc6A21C6360828EFA282Dc0";
+const ERC721NFTAddress = "0xf3A20F502daFF0879Ff7e72Fbd4f89A4A60ECefA";
 
 const ERC1155Abi = ERC1155ContractAbi.abi;
 const ERC721Abi = ERC721ContractAbi.abi;

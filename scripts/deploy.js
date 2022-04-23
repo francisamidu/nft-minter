@@ -11,12 +11,7 @@ async function main() {
   console.log(`ER1155NFT address: ${erc1155Nft.address}`);
 
   const ERC721NFT = await ethers.getContractFactory("ERC721NFT");
-  const erc721Nft = await ERC721NFT.deploy(
-    "Monster NFT",
-    "MNFT",
-    ethers.utils.parseEther("0.5"),
-    10
-  );
+  const erc721Nft = await ERC721NFT.deploy("Monster NFT", "MNFT");
   await erc721Nft.deployed();
   console.log(`ERC721NFT address: ${erc721Nft.address}`);
 }
