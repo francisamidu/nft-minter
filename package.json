@@ -19,6 +19,7 @@
 		"ethereum-waffle": "^3.4.0",
 		"ethers": "^5.5.4",
 		"ipfs-core": "^0.14.2",
+		"ipfs-http-client": "^56.0.2",
 		"millify": "^4.0.0",
 		"next": "*",
 		"react": "*",
