@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import { Asset } from "../types";
-import { formatCurrency } from "../helpers";
 
 type NFTItemProps = {
   nft: Asset;
@@ -9,7 +8,7 @@ type NFTItemProps = {
   length: number;
 };
 const NFTItem = ({
-  nft: { image, price, sold, title, seller },
+  nft: { image, name, description, owner },
   index,
   length,
 }: NFTItemProps) => {
@@ -21,7 +20,7 @@ const NFTItem = ({
       } min-h-[150px] transition-colors duration-300 shadow sm:mr-3 mb-3 nft-item`}
     >
       <p className="m-3">
-        Sold by <span className="text-gray-[#888]">@{seller}</span>
+        Owned by <span className="text-gray-[#888]">@{owner}</span>
       </p>
       <div className="flex flex-row justify-center place-center">
         <Image
@@ -33,18 +32,13 @@ const NFTItem = ({
         />
       </div>
       <div className="p-4 sm:text-left">
-        <h1 className="font-bold text-xl relative">{title}</h1>
+        <h1 className="font-bold text-xl relative">{name}</h1>
         <p className="mt-2">
-          Price:{" "}
-          <span className="font-bold">{formatCurrency(Number(price))}</span>
+          Name: <span className="font-bold">{name}</span>
         </p>
         <p className="mt-2">
-          Sold:{" "}
-          <span
-            className={`${sold ? "text-green-500" : "text-red-500"} font-bold`}
-          >
-            {sold ? "Yes" : "No"}
-          </span>
+          Description
+          <span className={`font-bold`}>{description}</span>
         </p>
       </div>
     </div>

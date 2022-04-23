@@ -35,8 +35,11 @@ const Asset = () => {
               id: item?.tokenId?.toNumber() || uid(),
               owner: item?.owner,
               image: meta.image,
+              name: meta.name,
+              description: meta.description,
               tokenUri,
             };
+            console.log(item);
             items.push(item);
           }
         }
@@ -57,8 +60,11 @@ const Asset = () => {
               owner: item?._owner,
               createdAt: new Date(item?._createdAt?.toNumber()),
               image: meta.image,
+              name: meta.name,
+              description: meta.description,
               tokenUri,
             };
+            console.log(item);
             items.push(item);
           }
         }
@@ -68,7 +74,6 @@ const Asset = () => {
       console.log(error);
       toast.error("Couldnt get NFT data");
     }
-    console.log(assets);
   };
   const loadAssets = () => {
     try {
