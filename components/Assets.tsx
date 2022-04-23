@@ -55,7 +55,6 @@ const Asset = () => {
             const tokenUri = await contract.tokenURI(id);
             const request = await fetch(tokenUri);
             const meta = await request.json();
-            console.log(meta);
             let item = await contract.idToTokenItem(id);
             item = {
               id: Number(item?._tokenId?.toNumber()) || uid(),
@@ -66,7 +65,6 @@ const Asset = () => {
               description: meta.description,
               tokenUri,
             };
-            console.log(item);
             items.push(item);
           }
         }
