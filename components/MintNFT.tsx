@@ -77,13 +77,10 @@ const MintNFT = () => {
         const image: any = selectedImage;
         const request = await ipfs.add(image);
         const url = `${request.path}`;
-        console.log("Image url", url);
-        setNft({
+        const data: any = JSON.stringify({
           ...nft,
           image: url,
         });
-        const file: any = nft;
-        const data: any = JSON.stringify(file);
         const response = await ipfs.add(data);
         const nftUrl = `${response.path}`;
         const transaction = await ERC721Contract.mint(
