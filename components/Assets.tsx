@@ -73,7 +73,7 @@ const Asset = () => {
   const loadAssets = () => {
     try {
       const provider = new ethers.providers.JsonRpcProvider(
-        `https://ropsten.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`
+        `https://ropsten.infura.io/v3/f8a9c7c9680045a78680e5988d5edc3e`
       );
 
       const ERC1155Contract = new ethers.Contract(
