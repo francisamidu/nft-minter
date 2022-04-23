@@ -18,7 +18,7 @@
 		"dotenv": "^16.0.0",
 		"ethereum-waffle": "^3.4.0",
 		"ethers": "^5.5.4",
-		"ipfs-http-client": "^56.0.1",
+		"ipfs-core": "^0.14.2",
 		"millify": "^4.0.0",
 		"next": "*",
 		"react": "*",
@@ -44,8 +44,5 @@
 		"serve": "next",
 		"build": "next build",
 		"start": "next start"
-	},
-	"engines": {
-		"node": "14.x"
 	}
 }
