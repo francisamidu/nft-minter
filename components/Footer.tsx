@@ -38,7 +38,7 @@ const Footer = () => {
       <div className="flex flex-col sm:flex-row py-4 border-t-2 shadow-t-sm justify-between items-center">
         <h1 className="text-1xl font-bold capitalize">{name}</h1>
         <p className="my-4 sm:my-0">
-          <span className="font-bold text-md">
+          <span className="font-bold">
             &copy; 2022
             <span className="ml-2">{name}</span>
           </span>
