@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { NFTItem } from ".";
 import { useWallet } from "../contexts";
-import { uid } from "../helpers";
+import { formatDate,uid } from "../helpers";
 import {
   ERC1155Abi,
   ERC1155NFTAddress,
@@ -28,11 +28,10 @@ const Asset = () => {
             let tokenUri = await contract?.uri(id);
             const request = await fetch(tokenUri);
             const meta = await request.json();
-            console.log(meta);
             let item = await contract?.idToTokenItem(id);
             item = {
               amount: item.tokens.toNumber(),
-              createdAt: new Date(item?.createdAt?.Number()) || new Date(),
+              createdAt: formatDate(new Date(item?.createdAt?.Number()) || new Date()),
               id: item?.tokenId?.toNumber() || uid(),
               owner: item?.owner,
               image: meta.image,
@@ -40,11 +39,10 @@ const Asset = () => {
               description: meta.description,
               tokenUri,
             };
-            console.log(item);
             items.push(item);
           }
         }
-        setAssets([...assets, items]);
+        setAssets([...assets, ...items]);
       } else {
         let tokenIds = await contract._tokenIds();
         tokenIds = tokenIds.toNumber();
@@ -59,16 +57,16 @@ const Asset = () => {
             item = {
               id: Number(item?._tokenId?.toNumber()) || uid(),
               owner: item?._owner,
-              createdAt: new Date(item?._createdAt?.toNumber()),
+              createdAt: formatDate(new Date(item?._createdAt?.toNumber())),
               image: meta.image,
               name: meta.name,
               description: meta.description,
               tokenUri,
-            };
+            };            
             items.push(item);
           }
         }
-        setAssets([...assets, items]);
+        setAssets([...assets, ...items]);
       }
     } catch (error) {
       console.log(error);
@@ -77,9 +75,11 @@ const Asset = () => {
   };
   const loadAssets = () => {
     try {
-      const provider = new ethers.providers.JsonRpcProvider(
-        `https://ropsten.infura.io/v3/f8a9c7c9680045a78680e5988d5edc3e`
-      );
+      // const provider = new ethers.providers.JsonRpcProvider(
+      //   `https://ropsten.infura.io/v3/f8a9c7c9680045a78680e5988d5edc3e`
+      // );
+      
+      const provider = new ethers.providers.JsonRpcProvider();
 
       const ERC1155Contract = new ethers.Contract(
         ERC1155NFTAddress,
@@ -103,7 +103,7 @@ const Asset = () => {
     loadAssets();
   }, []);
   return (
-    <section className="p-4">
+    <section className="p-4 sm:max-w-screen-lg sm:mx-auto">
       {assets.length ? (
         <>
           <h1 className="font-bold text-2xl mb-4">Owned NFTs</h1>
@@ -111,7 +111,7 @@ const Asset = () => {
             {assets.map((item, index) => (
               <NFTItem
                 nft={item}
-                key={item.id}
+                key={item.id || index}
                 index={index}
                 length={assets.length}
               />

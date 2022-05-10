@@ -11,9 +11,8 @@ import {
   ERC1155Abi,
   ERC1155NFTAddress,
   ERC721Abi,
-  ERC721NFTAddress,
+  ERC721NFTAddress
 } from "../config";
-import { nextTick } from "process";
 
 const MintNFT = () => {
   const { account, active } = useWallet();
@@ -76,19 +75,16 @@ const MintNFT = () => {
       if (nft.type === "ERC721") {
         const image: any = selectedImage;
         const request = await ipfs.add(image);
-        const url = `https://ipfs.infura.io/${request.path}`;
-        console.log("Image resonse", request);
+        const url = `http://localhost:8080/ipfs/${request.path}`;
         const data: any = JSON.stringify({
           name: nft.name,
           description: nft.description,
           image: url,
         });
         const response = await ipfs.add(data);
-        const nftUrl = `${response.path}`;
-        console.log("NFT response", response);
         const transaction = await ERC721Contract.mint(
           account,
-          nftUrl,
+          response.path,
           Date.now()
         );
         const tx = await transaction.wait();
@@ -100,7 +96,6 @@ const MintNFT = () => {
         let item = await ERC721Contract.idToTokenItem(tokenId);
         item = {
           id: Number(item._tokenId.toString()),
-          price: Number(ethers.utils.parseEther(item.price)),
           owner: item._owner,
           image: meta.image,
           createdAt: new Date(Number(item._createdAt.toString())),
@@ -117,16 +112,15 @@ const MintNFT = () => {
       } else if (nft.type == "ERC1155") {
         const image: any = selectedImage;
         const request = await ipfs.add(image);
-        const url = `${request.path}`;
         const data = JSON.stringify({
           ...nft,
-          image: url,
+          image: `http://localhost:8080/ipfs/${request.path}`,
         });
         const nftUrl = await ipfs.add(data);
         const transaction = await ERC1155Contract.mintNFT(
           account,
           nft.amount,
-          `${nftUrl.path}`,
+          nftUrl.path,
           Date.now(),
           "0x00"
         );
@@ -136,7 +130,7 @@ const MintNFT = () => {
           toast.success("NFT(s) Minted");
         } else {
           const tokenId = tx.events[1].args[0].toString();
-          const tokenUri = await ERC721Contract.tokenURI(tokenId);
+          const tokenUri = await ERC721Contract.uri(tokenId);
           const meta = await (await fetch(tokenUri)).json();
           let item = await ERC721Contract.idToTokenItem(tokenId);
           item = {

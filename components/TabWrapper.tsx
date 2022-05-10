@@ -31,9 +31,7 @@ const TabWrapper = () => {
       );
       setBalance(
         Number(
-          Number(accountBalance) > 10000
-            ? accountBalance.slice(0, 4)
-            : accountBalance
+          accountBalance.slice(0, 5)
         )
       );
     }

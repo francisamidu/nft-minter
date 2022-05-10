@@ -1,5 +1,5 @@
 module.exports = {
   images: {
-    domains: ["https://ipfs.infura.io"],
+    domains: ["ipfs.infura.io","localhost"],
   },
 };

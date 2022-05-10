@@ -8,6 +8,8 @@ const NFT = ({ name, image, owner }: Partial<Asset>) => {
     <div className="py-2 rounded-xl shadow min-w-[320px]">
       <Image
         src={image}
+        loader={({ src }) => src}
+        unoptimized={true}
         layout="responsive"
         width="400"
         height="300"
@@ -15,7 +17,7 @@ const NFT = ({ name, image, owner }: Partial<Asset>) => {
       />
       <div className="p-3">
         <p className="font-bold">{name}</p>
-        <p className="text-gray-600 my-1">{owner}</p>
+        <p className="text-gray-600 my-1 font-bold">{owner}</p>
       </div>
     </div>
   );

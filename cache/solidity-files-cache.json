@@ -404,8 +404,8 @@
       ]
     },
     "E:\\Genius\\Dev\\web\\blockchain-projects\\nft-minter\\contracts\\ERC721NFT.sol": {
-      "lastModificationDate": 1650663699420,
-      "contentHash": "4097fece99a3669e90df873989bda99e",
+      "lastModificationDate": 1652172024364,
+      "contentHash": "4dd6b5b81484bf25b87fbc40af88482c",
       "sourceName": "contracts/ERC721NFT.sol",
       "solcConfig": {
         "version": "0.8.11",
@@ -596,8 +596,8 @@
       ]
     },
     "E:\\Genius\\Dev\\web\\blockchain-projects\\nft-minter\\contracts\\ERC1155NFT.sol": {
-      "lastModificationDate": 1650663801018,
-      "contentHash": "e36f465a1d16ea4341fe961aa7b07ad9",
+      "lastModificationDate": 1652106199888,
+      "contentHash": "9ae1526ff2a1023f456f33393724d467",
       "sourceName": "contracts/ERC1155NFT.sol",
       "solcConfig": {
         "version": "0.8.11",

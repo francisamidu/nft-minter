@@ -2,7 +2,6 @@
 pragma solidity 0.8.11;
 
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
-// import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
@@ -11,11 +10,6 @@ contract ERC721NFT is ERC721URIStorage, ReentrancyGuard  {
     using Counters for Counters.Counter;
     Counters.Counter public _tokenIds;
   
-    // uint256 public cost;
-    // uint256 public maxSupply;
-
-    bool public revealed = false;
-
     struct Token {
         uint256 _tokenId;
         address _owner;
@@ -29,15 +23,10 @@ contract ERC721NFT is ERC721URIStorage, ReentrancyGuard  {
     constructor(
     string memory _tokenName,
     string memory _tokenSymbol
-    // uint256 _cost,
-    // uint256 _maxSupply
-  ) ERC721 (_tokenName, _tokenSymbol) {
-    // setCost(_cost);
-    // maxSupply = _maxSupply;
-  }
+  ) ERC721 (_tokenName, _tokenSymbol) {}
 
     function _baseURI() internal pure override returns (string memory baseURI) {
-        return "https://ipfs.infura.io/ipfs/";
+        return "http://localhost:8080/ipfs/";
     }   
 
     function mint(address to, string memory _tokenURI, uint256 createdAt) public {

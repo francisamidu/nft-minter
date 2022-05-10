@@ -51,7 +51,7 @@ const Nav = () => {
   const [balance, setBalance] = useState<string | number>("0x00");
   const [trimmedAddress, setTrimmedAddress] = useState("0x00");
   useEffect(() => {
-    if (balance && account && active) {
+    if (balance && account) {
       setTrimmedAddress(
         `${account.slice(0, 5)}...${account.slice(
           account.length - 5,
@@ -60,13 +60,13 @@ const Nav = () => {
       );
       setBalance(
         Number(
-          Number(accountBalance) > 10000
+          Number(accountBalance) > 9999
             ? accountBalance.slice(0, 4)
             : accountBalance
         )
       );
     }
-  }, [active, account]);
+  }, [active,account,accountBalance]);
   return (
     <section className="bg-white fixed top-0 left-0 w-full z-20 py-0 dark:bg-slate-800 dark:text-gray-100">
       <div className="md:max-w-screen-xl md:mx-auto relative">

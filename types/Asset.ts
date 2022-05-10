@@ -1,4 +1,5 @@
 type Asset = {
+  createdAt?: Date | string;
   id: string | number;
   image: string;
   description: string;
