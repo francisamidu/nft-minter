@@ -6,7 +6,7 @@ async function main() {
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
   const ERC1155NFT = await ethers.getContractFactory("ERC1155NFT");
-  const erc1155Nft = await ERC1155NFT.deploy("http://localhost:8080/ipfs/");
+  const erc1155Nft = await ERC1155NFT.deploy("http://ipfs.telos.miami/ipfs/");
   await erc1155Nft.deployed();
   console.log(`ER1155NFT address: ${erc1155Nft.address}`);
 

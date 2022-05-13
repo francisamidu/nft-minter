@@ -26,7 +26,7 @@ contract ERC721NFT is ERC721URIStorage, ReentrancyGuard  {
   ) ERC721 (_tokenName, _tokenSymbol) {}
 
     function _baseURI() internal pure override returns (string memory baseURI) {
-        return "http://localhost:8080/ipfs/";
+        return "http://ipfs.fleek.co/ipfs/";
     }   
 
     function mint(address to, string memory _tokenURI, uint256 createdAt) public {
