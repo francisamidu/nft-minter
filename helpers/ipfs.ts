@@ -1,9 +1,10 @@
 import { create } from "ipfs-http-client";
 
 const client = create({
-  host: "localhost",
+  apiPath:"/api/v0",
+  host: "ipfs.infura.io",
   port: 5001,
-  protocol: "http",
+  protocol: "https",
 });
 
 export default client;

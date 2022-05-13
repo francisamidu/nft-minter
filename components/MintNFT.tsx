@@ -75,7 +75,7 @@ const MintNFT = () => {
       if (nft.type === "ERC721") {
         const image: any = selectedImage;
         const request = await ipfs.add(image);
-        const url = `http://localhost:8080/ipfs/${request.path}`;
+        const url = `http://gateway.ipfs.io/ipfs/${request.path}`;
         const data: any = JSON.stringify({
           name: nft.name,
           description: nft.description,
@@ -114,7 +114,7 @@ const MintNFT = () => {
         const request = await ipfs.add(image);
         const data = JSON.stringify({
           ...nft,
-          image: `http://localhost:8080/ipfs/${request.path}`,
+          image: `http://gateway.ipfs.io/ipfs/${request.path}`,
         });
         const nftUrl = await ipfs.add(data);
         const transaction = await ERC1155Contract.mintNFT(

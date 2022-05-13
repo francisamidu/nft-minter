@@ -404,8 +404,8 @@
       ]
     },
     "E:\\Genius\\Dev\\web\\blockchain-projects\\nft-minter\\contracts\\ERC721NFT.sol": {
-      "lastModificationDate": 1652172024364,
-      "contentHash": "4dd6b5b81484bf25b87fbc40af88482c",
+      "lastModificationDate": 1652478876508,
+      "contentHash": "1e858dc911bf1493b92a1d084600c079",
       "sourceName": "contracts/ERC721NFT.sol",
       "solcConfig": {
         "version": "0.8.11",
