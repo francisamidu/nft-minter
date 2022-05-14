@@ -10,6 +10,7 @@ import {
   ERC721Abi,
   ERC721NFTAddress,
 } from "../config";
+import getConfig from "next/config"
 
 const Asset = () => {
   const { active, account } = useWallet();
@@ -75,11 +76,10 @@ const Asset = () => {
   };
   const loadAssets = () => {
     try {
-      // const provider = new ethers.providers.JsonRpcProvider(
-      //   `https://ropsten.infura.io/v3/f8a9c7c9680045a78680e5988d5edc3e`
-      // );
-      
-      const provider = new ethers.providers.JsonRpcProvider();
+      const { publicRuntimeConfig } = getConfig()
+      const provider = new ethers.providers.JsonRpcProvider(
+        `https://ropsten.infura.io/v3/${publicRuntimeConfig.INFURA_ID}`
+      );
 
       const ERC1155Contract = new ethers.Contract(
         ERC1155NFTAddress,
